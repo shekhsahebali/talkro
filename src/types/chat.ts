@@ -1,0 +1,46 @@
+import { User } from "./user";
+import { Post } from "./post";
+
+export interface Comment {
+  id: string;
+  author: User;
+  text: string;
+  timestamp: string;
+  likes: number;
+  isLiked?: boolean;
+  replies?: Comment[];
+}
+
+export interface ChatState {
+  userId: string;
+  isMinimized: boolean;
+}
+
+export interface Attachment {
+  url: string;
+  type: 'image' | 'file';
+  name: string;
+}
+
+export interface Message {
+  id: string;
+  senderId: string;
+  text: string;
+  timestamp: string;
+  sharedPost?: Post; 
+  attachment?: Attachment;
+}
+
+export interface Conversation {
+  id: string;
+  participant?: User; 
+  participants?: User[]; 
+  name?: string; 
+  lastMessage: string;
+  timestamp: string;
+  unread?: boolean;
+  isGroup?: boolean;
+  themeColor?: string;
+  customEmoji?: string;
+  nicknames?: Record<string, string>;
+}
