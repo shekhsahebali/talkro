@@ -1,14 +1,15 @@
-
+'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import { Story } from '../types';
+import { Story } from '@/types/post';
 import { X, MoreHorizontal, Heart, Send, Music, Share2, ChevronLeft, ChevronRight, CheckCircle2, RotateCcw, MessageSquare, Plus, Pause, Play } from 'lucide-react';
-import { Avatar, AvatarImage, AvatarFallback } from './ui/Avatar';
-import { Button } from './ui/Button';
-import { cn } from '../lib/utils';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 interface StoryViewerProps {
   stories: Story[];
-  initialStoryId: string;
+  initialStoryId: number;
   onClose: () => void;
 }
 
@@ -27,7 +28,7 @@ interface Particle {
   left: number;
 }
 
-const StoryViewer: React.FC<StoryViewerProps> = ({ stories, initialStoryId, onClose }) => {
+const StoryViewer  = ({ stories, initialStoryId, onClose }: StoryViewerProps) => {
   const [currentIndex, setCurrentIndex] = useState(() => 
     stories.findIndex(s => s.id === initialStoryId)
   );
@@ -43,12 +44,21 @@ const StoryViewer: React.FC<StoryViewerProps> = ({ stories, initialStoryId, onCl
   const story = stories[currentIndex];
 
   // Effect to pause automatically if reacting or replying
-  useEffect(() => {
-    if (showReactions || replyText.length > 0) {
-      setIsPaused(true);
-    }
-  }, [showReactions, replyText]);
+  // useEffect(() => {
+  //   if (showReactions || replyText.length > 0) {
+  //     setIsPaused(true);
+  //   }
+  // }, [showReactions, replyText]);
 
+  const handleNext = () => {
+    if (currentIndex < stories.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+      setProgress(0);
+      setIsLiked(false);
+    } else {
+      setIsFinished(true);
+    }
+  };
   useEffect(() => {
     if (isFinished || isPaused) return;
     
@@ -66,15 +76,7 @@ const StoryViewer: React.FC<StoryViewerProps> = ({ stories, initialStoryId, onCl
     return () => clearInterval(interval);
   }, [currentIndex, isPaused, isFinished]);
 
-  const handleNext = () => {
-    if (currentIndex < stories.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-      setProgress(0);
-      setIsLiked(false);
-    } else {
-      setIsFinished(true);
-    }
-  };
+
 
   const handlePrev = () => {
     if (currentIndex > 0) {
@@ -120,24 +122,36 @@ const StoryViewer: React.FC<StoryViewerProps> = ({ stories, initialStoryId, onCl
     setTimeout(() => setShowSentToast(false), 2000);
   };
 
-  const handleTap = (e: React.MouseEvent | React.TouchEvent) => {
-    if ((e.target as HTMLElement).closest('button') || (e.target as HTMLElement).closest('input')) {
-      return;
-    }
+ const handleTap = (e: React.MouseEvent | React.TouchEvent) => {
+  const target = e.target as HTMLElement;
 
-    const x = 'touches' in e ? (e as React.TouchEvent).touches[0].clientX : (e as React.MouseEvent).clientX;
-    const width = window.innerWidth;
-    
-    if (x < width * 0.3) {
-      handlePrev();
-    } else {
-      handleNext();
-    }
-  };
+  if (target.closest('button') || target.closest('input')) return;
+
+  const clientX =
+    'touches' in e
+      ? e.touches[0]?.clientX
+      : (e as React.MouseEvent).clientX;
+
+  if (clientX == null) return;
+
+  const width = window.innerWidth;
+
+  const leftZone = width * 0.3;
+  const rightZone = width * 0.7;
+
+  if (clientX < leftZone) {
+    handlePrev();
+  } else if (clientX > rightZone) {
+    handleNext();
+  }
+  // middle 40% → do nothing (no gap feeling)
+};
+
 
   const togglePause = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsPaused(!isPaused);
+    setIsPaused(!true)
+    // setIsPaused(!isPaused);
   };
 
   if (isFinished) {
@@ -173,7 +187,7 @@ const StoryViewer: React.FC<StoryViewerProps> = ({ stories, initialStoryId, onCl
   return (
     <div className="fixed inset-0 z-[150] bg-black flex items-center justify-center animate-in fade-in duration-300 select-none">
       <div className="absolute inset-0 opacity-40 blur-3xl scale-125 select-none pointer-events-none">
-        <img src={story.mediaUrl} className="w-full h-full object-cover" alt="bg" />
+        <Image width={0} height={0} src={story.mediaUrl || `https://picsum.photos/seed/${story.id}/1200/1200`} className="w-full h-full object-cover" alt="bg" />
       </div>
 
       <div className="absolute top-0 inset-x-0 p-4 flex space-x-1.5 z-[100] max-w-[480px] mx-auto">
@@ -197,13 +211,14 @@ const StoryViewer: React.FC<StoryViewerProps> = ({ stories, initialStoryId, onCl
         onTouchStart={() => setIsPaused(true)}
         onTouchEnd={() => { if (!showReactions && replyText.length === 0) setIsPaused(false); }}
         onClick={handleTap}
+        onDoubleClick={togglePause}
       >
-        <div className="hidden sm:block absolute -left-20 top-1/2 -translate-y-1/2 z-[100]">
+        <div className="block absolute -left-20 top-1/2 -translate-y-1/2 z-[100]">
           <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); handlePrev(); }} disabled={currentIndex === 0} className="w-14 h-14 rounded-full bg-black/40 text-white border border-white/10 disabled:opacity-20 hover:scale-110 transition-transform">
             <ChevronLeft className="w-8 h-8" />
           </Button>
         </div>
-        <div className="hidden sm:block absolute -right-20 top-1/2 -translate-y-1/2 z-[100]">
+        <div className="block absolute -right-20 top-1/2 -translate-y-1/2 z-[100]">
           <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); handleNext(); }} className="w-14 h-14 rounded-full bg-black/40 text-white border border-white/10 hover:scale-110 transition-transform">
             <ChevronRight className="w-8 h-8" />
           </Button>
@@ -249,8 +264,8 @@ const StoryViewer: React.FC<StoryViewerProps> = ({ stories, initialStoryId, onCl
         </div>
 
         <div className="flex-1 relative flex items-center justify-center bg-black overflow-hidden">
-          <img 
-            src={story.mediaUrl} 
+          <Image width={0} height={0} 
+            src={story.mediaUrl || `https://picsum.photos/seed/${story.id}/800/1200`} 
             className="w-full h-full object-cover select-none pointer-events-none" 
             alt="Story" 
           />

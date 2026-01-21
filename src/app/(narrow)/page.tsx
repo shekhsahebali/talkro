@@ -5,14 +5,15 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Post from '@/components/post/post-card';
-import { INITIAL_POSTS } from '@/lib/constants';
+import { INITIAL_POSTS, STORY_DATA } from '@/lib/constants';
 import { useRouter } from 'next/navigation';
 import ThemeToggle from '@/components/theme-toggle';
 import { CURRENT_USER } from '@/lib/constants';
+import Stories from '@/components/story/story-card';
 const HomePage = () => {
 
   const router = useRouter();
-
+ 
   const handlemessage = () => {
     router.push('/messages');
   }
@@ -42,7 +43,7 @@ const HomePage = () => {
         <div className="ml-auto p-2 rounded-full text-foreground"><Plus className="w-5 h-5 text-foreground/50" /></div>
       </div>
 
-      {/* <Stories /> */}
+      <Stories stories={STORY_DATA} />
 
       <div className="flex flex-col">
         {INITIAL_POSTS.map((post) => (

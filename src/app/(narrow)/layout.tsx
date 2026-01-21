@@ -16,10 +16,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  modal,
+  model,
 }: Readonly<{
   children: React.ReactNode;
-  modal: React.ReactNode;
+  model: React.ReactNode;
 }>) {
 
 
@@ -42,7 +42,7 @@ export default function RootLayout({
 
             <main className="border-white/8 flex flex-col relative max-w-[640px] min-h-screen sm:border-x">
               {children}
-              {modal}
+              {model}
             </main>
 
             <div className="hidden md:block">
