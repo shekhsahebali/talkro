@@ -1,15 +1,7 @@
 import { User } from "./user";
 import { Post } from "./post";
 
-export interface Comment {
-  id: string;
-  author: User;
-  text: string;
-  timestamp: string;
-  likes: number;
-  isLiked?: boolean;
-  replies?: Comment[];
-}
+
 
 export interface ChatState {
   userId: string;
@@ -43,4 +35,18 @@ export interface Conversation {
   themeColor?: string;
   customEmoji?: string;
   nicknames?: Record<string, string>;
+}
+
+export interface Comment {
+  id: string;
+  text: string;
+  timestamp: string;
+  likes: number;
+  isLiked?: boolean;
+  author: {
+    name: string;
+    avatar?: string;
+    verified?: boolean;
+  };
+  replies?: Comment[];
 }

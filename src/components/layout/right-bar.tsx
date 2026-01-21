@@ -1,17 +1,21 @@
-
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import { Search, MoreHorizontal, Video } from 'lucide-react';
 
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 import { Button } from '../ui/button';
 import { Separator } from '../ui/separator';
 import { MOCK_USERS } from '@/lib/constants';
+import { useChatStore } from '@/store/useChatStore';
 
 
 
 
 const RightSidebar = ({ show = true }) => {
+  
   if (!show) return null;
+
+ 
 
   const trends = [
     { topic: 'React 19', posts: '45.2K posts', category: 'Technology · Trending' },
@@ -69,7 +73,7 @@ const RightSidebar = ({ show = true }) => {
           {contacts.map((contact) => (
             <div
               key={contact.id}
-              // onClick={() => onOpenChat?.(contact.id)}
+              onClick={() => useChatStore.getState().openChat(contact.id)}
               className="flex items-center space-x-3 p-2 rounded-2xl hover:bg-foreground/5 transition-all cursor-pointer group"
             >
               <div className="relative">
@@ -116,6 +120,7 @@ const RightSidebar = ({ show = true }) => {
         <a href="#" className="hover:underline">Cookies</a>
         <span>© 2026 TalkRo</span>
       </div>
+      
     </aside>
   );
 };

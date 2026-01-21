@@ -1,37 +1,57 @@
 
 import React, { useState } from 'react';
 import { X, Search, Send, Repeat, User as UserIcon, Check } from 'lucide-react';
-import { Avatar, AvatarImage, AvatarFallback } from './ui/Avatar';
-import { Button } from './ui/Button';
-import { Post, User } from '../types';
-import { MOCK_USERS } from '../constants';
-import { cn } from '../lib/utils';
+import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
+import { Button } from '../ui/button';
+import { Post } from '@/types/post';
+import { MOCK_USERS } from '@/lib/constants';
+import { cn } from '@/lib/utils';
 
 interface ShareModalProps {
   post: Post;
-  isOpen: boolean;
   onClose: () => void;
-  onShareToProfile: (postId: string) => void;
-  onShareToMessage: (userId: string, postId: string) => void;
 }
 
-const ShareModal: React.FC<ShareModalProps> = ({ post, isOpen, onClose, onShareToProfile, onShareToMessage }) => {
+const ShareModal: React.FC<ShareModalProps> = ({ post, onClose }) => {
   const [query, setQuery] = useState('');
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
 
-  if (!isOpen) return null;
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  };
+  
+  const handleSelectUser = (user: string) => {
+    setSelectedUser(user);
+  };
+
+  const handleClearSelection = () => {
+    setSelectedUser(null);
+  };
+
+  const handleShareToStory = () => {
+    if (selectedUser) {
+      // onShareToStory(selectedUser, post.id);
+      onClose();
+    }
+  };
+
+  const handleShareToMessage = () => {
+    if (selectedUser) {
+      // onShareToMessage(selectedUser, post.id);
+      onClose();
+    }
+  };
+  const onShareToProfile = (id: string) => {
+    // onShareToProfile(id);
+    onClose();
+  };
 
   const filteredUsers = MOCK_USERS.filter(u => 
     u.name.toLowerCase().includes(query.toLowerCase()) || 
     u.handle.toLowerCase().includes(query.toLowerCase())
   ).slice(0, 5);
 
-  const handleShareMessage = () => {
-    if (selectedUser) {
-      onShareToMessage(selectedUser, post.id);
-      onClose();
-    }
-  };
+  
 
   return (
     <div className="fixed inset-0 z-[250] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
@@ -51,7 +71,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ post, isOpen, onClose, onShareT
             <Button 
               variant="outline" 
               className="w-full h-14 rounded-2xl justify-start space-x-4 border-white/10 hover:bg-white/5"
-              onClick={() => { onShareToProfile(post.id); onClose(); }}
+              onClick={() => { onShareToProfile(post.id) }}
             >
               <div className="p-2 bg-sky-500/10 rounded-xl text-sky-500">
                 <Repeat className="w-6 h-6" />
@@ -104,7 +124,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ post, isOpen, onClose, onShareT
 
           <Button 
             disabled={!selectedUser}
-            onClick={handleShareMessage}
+            onClick={handleShareToMessage}
             className="w-full h-14 rounded-2xl bg-white text-black hover:bg-neutral-200 font-black text-lg shadow-xl"
           >
             <Send className="w-5 h-5 mr-2" />

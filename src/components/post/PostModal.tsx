@@ -1,25 +1,16 @@
-
+'use client';
 import React, { useState, useRef } from 'react';
-import { CURRENT_USER, MOCK_USERS } from '../constants';
+import { CURRENT_USER, MOCK_USERS } from '@/lib/constants';
 import { X, Globe, Users, Lock, ChevronDown, ImageIcon, UserPlus, Smile, MapPin, MoreHorizontal, Check, Search, Film } from 'lucide-react';
-import { Avatar, AvatarImage, AvatarFallback } from './ui/Avatar';
-import { Button } from './ui/Button';
-import { Feeling, Poll, User } from '../types';
-import { cn } from '../lib/utils';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Feeling } from '@/types/post';
+import { User } from '@/types/user';
+import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
-interface PostModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onPost: (data: { 
-    content: string; 
-    images?: string[]; 
-    gif?: string; 
-    poll?: Poll; 
-    feeling?: Feeling;
-    location?: string;
-    taggedUsers?: User[];
-  }) => void;
-}
+
 
 const FEELINGS: Feeling[] = [
   { emoji: '😊', label: 'Happy' },
@@ -31,7 +22,7 @@ const FEELINGS: Feeling[] = [
   { emoji: '😤', label: 'Proud' },
 ];
 
-const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onPost }) => {
+const PostModal= () => {
   const [content, setContent] = useState('');
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [selectedGif, setSelectedGif] = useState<string | null>(null);
@@ -43,7 +34,12 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onPost }) => {
   const [showTagPicker, setShowTagPicker] = useState(false);
   const [privacy, setPrivacy] = useState<'public' | 'friends' | 'private'>('public');
 
-  if (!isOpen) return null;
+  const router = useRouter();
+
+  const onClose = () => {
+    reset();
+    router.back();
+  };
 
   const handleAddImage = () => {
     const mockImage = `https://picsum.photos/seed/${Math.random()}/1200/800`;
@@ -65,14 +61,14 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onPost }) => {
 
   const handleSubmit = () => {
     if (content.trim() || selectedImages.length > 0 || selectedGif) {
-      onPost({ 
-        content, 
-        images: selectedImages.length > 0 ? selectedImages : undefined, 
-        gif: selectedGif || undefined,
-        feeling: feeling || undefined,
-        location: location || undefined,
-        taggedUsers: taggedUsers.length > 0 ? taggedUsers : undefined
-      });
+      // onPost({ 
+      //   content, 
+      //   images: selectedImages.length > 0 ? selectedImages : undefined, 
+      //   gif: selectedGif || undefined,
+      //   feeling: feeling || undefined,
+      //   location: location || undefined,
+      //   taggedUsers: taggedUsers.length > 0 ? taggedUsers : undefined
+      // });
       reset();
       onClose();
     }
@@ -91,16 +87,16 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onPost }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/4 backdrop-blur p-4 animate-in fade-in duration-200">
       <div 
-        className="bg-[#1c1c1c] w-full max-w-[550px] rounded-2xl shadow-[0_20px_60px_-10px_rgba(0,0,0,0.5)] border border-white/[0.08] flex flex-col max-h-[90vh] overflow-hidden animate-in zoom-in-95 duration-200"
+        className="bg-card w-full max-w-[550px] rounded-2xl shadow-[0_20px_60px_-10px_rgba(0,0,0,0.5)] border border-border/8 flex flex-col max-h-[90vh] overflow-hidden animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="p-4 border-b border-white/[0.08] flex items-center justify-between bg-black/20">
+        <header className="p-4 border-b border-border/8 flex items-center justify-between bg-background/50">
           <div className="w-8" /> 
           <h2 className="text-lg font-black tracking-tight">Create post</h2>
-          <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10" onClick={onClose}>
-            <X className="w-5 h-5 text-white" />
+          <Button variant="ghost" size="icon" className="rounded-full hover:bg-foreground/10" onClick={onClose}>
+            <X className="w-5 h-5 text-foreground" />
           </Button>
         </header>
 
@@ -114,17 +110,17 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onPost }) => {
               <div className="flex items-center space-x-2">
                 <p className="font-bold text-base">{CURRENT_USER.name}</p>
                 {feeling && (
-                  <span className="text-[13px] text-neutral-500 font-medium">
-                    is feeling <span className="text-neutral-200 font-bold">{feeling.emoji} {feeling.label}</span>
+                  <span className="text-[13px] text-foreground/50 font-medium">
+                    is feeling <span className="text-foreground/30 font-bold">{feeling.emoji} {feeling.label}</span>
                   </span>
                 )}
               </div>
-              <button className="flex items-center space-x-1 bg-white/5 hover:bg-white/10 rounded-lg px-2 py-1 mt-1 transition-colors w-fit border border-white/5">
-                {privacy === 'public' ? <Globe className="w-3.5 h-3.5 text-neutral-400" /> : privacy === 'friends' ? <Users className="w-3.5 h-3.5 text-neutral-400" /> : <Lock className="w-3.5 h-3.5 text-neutral-400" />}
-                <span className="text-[11px] font-black uppercase tracking-widest text-neutral-300">
+              <button className="flex items-center space-x-1 bg-foreground/7 hover:bg-foreground/10 rounded-lg px-2 py-1 mt-1 transition-colors w-fit border border-white/5">
+                {privacy === 'public' ? <Globe className="w-3.5 h-3.5 text-foreground/50" /> : privacy === 'friends' ? <Users className="w-3.5 h-3.5 text-foreground/40" /> : <Lock className="w-3.5 h-3.5 text-foreground/40" />}
+                <span className="text-[11px] font-black uppercase tracking-widest text-foreground/60">
                   {privacy}
                 </span>
-                <ChevronDown className="w-3 h-3 text-neutral-400" />
+                <ChevronDown className="w-3 h-3 text-foreground/60" />
               </button>
             </div>
           </div>
@@ -135,14 +131,14 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onPost }) => {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder={`What's on your mind, ${CURRENT_USER.name.split(' ')[0]}?`}
-              className="w-full bg-transparent border-none text-xl sm:text-2xl placeholder-[#71767b] focus:ring-0 resize-none min-h-[120px] outline-none leading-relaxed"
+              className="w-full bg-transparent border-none text-xl sm:text-2xl placeholder-muted-foreground focus:ring-0 resize-none min-h-[120px] outline-none leading-relaxed"
             />
 
             {location && (
-              <div className="flex items-center space-x-2 text-sky-500 text-sm font-bold bg-sky-500/10 w-fit px-3 py-1.5 rounded-full border border-sky-500/20">
+              <div className="flex items-center space-x-2 text-primary text-sm font-bold bg-primary/10 w-fit px-3 py-1.5 rounded-full border border-primary/20">
                 <MapPin className="w-4 h-4" />
                 <span>{location}</span>
-                <button onClick={() => setLocation('')} className="ml-1 hover:text-white"><X className="w-3 h-3" /></button>
+                <button onClick={() => setLocation('')} className="ml-1 hover:text-foreground"><X className="w-3 h-3" /></button>
               </div>
             )}
 
@@ -151,7 +147,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onPost }) => {
                 {taggedUsers.map(u => (
                   <div key={u.id} className="flex items-center bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded-full text-xs font-bold text-emerald-500">
                     {u.name}
-                    <button onClick={() => toggleTagUser(u)} className="ml-1.5 hover:text-white"><X className="w-3 h-3" /></button>
+                    <button onClick={() => toggleTagUser(u)} className="ml-1.5 hover:text-foreground"><X className="w-3 h-3" /></button>
                   </div>
                 ))}
               </div>
@@ -161,12 +157,12 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onPost }) => {
           {/* Media Grid Preview */}
           {selectedImages.length > 0 && (
             <div className={cn(
-              "rounded-2xl border border-white/10 overflow-hidden grid gap-1",
+              "rounded-2xl border border-foreground/10 overflow-hidden grid gap-1",
               selectedImages.length === 1 ? "grid-cols-1" : "grid-cols-2"
             )}>
               {selectedImages.map((img, i) => (
                 <div key={i} className="relative group aspect-video">
-                  <img src={img} className="w-full h-full object-cover" alt="Preview" />
+                  <Image priority fill src={img} className="w-full h-full object-cover" alt="Preview" />
                   <button 
                     onClick={() => removeImage(i)}
                     className="absolute top-2 right-2 bg-black/60 backdrop-blur-md p-1.5 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity"
@@ -179,9 +175,9 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onPost }) => {
           )}
         </div>
 
-        <div className="p-4 bg-black/40 border-t border-white/[0.08] space-y-4">
-          <div className="flex items-center justify-between border border-white/10 rounded-2xl p-3 px-4 bg-white/5">
-            <span className="text-sm font-black tracking-tight text-neutral-300">Add to your post</span>
+        <div className="p-4 bg-background/50 border-t border-border space-y-4">
+          <div className="flex items-center justify-between border border-border/10 rounded-2xl p-3 px-4 bg-white/5">
+            <span className="text-sm font-black tracking-tight text-foreground/35">Add to your post</span>
             <div className="flex items-center space-x-2">
               <ToolIconButton icon={<ImageIcon className="w-5 h-5 text-emerald-500" />} onClick={handleAddImage} />
               <ToolIconButton icon={<UserPlus className="w-5 h-5 text-sky-500" />} onClick={() => setShowTagPicker(!showTagPicker)} active={showTagPicker} />
@@ -192,29 +188,29 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onPost }) => {
 
           {/* Sub-panels */}
           {showLocationInput && (
-            <div className="flex items-center space-x-2 bg-white/5 p-2 rounded-xl animate-in slide-in-from-bottom-2">
+            <div className="flex items-center space-x-2 bg-foreground/5 p-2 rounded-xl animate-in slide-in-from-bottom-2">
               <MapPin className="w-4 h-4 text-rose-500 ml-2" />
               <input 
                 autoFocus
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="Where are you?"
-                className="bg-transparent border-none outline-none text-sm flex-1 placeholder-neutral-600"
+                className="bg-transparent border-none outline-none text-sm flex-1 placeholder-foreground/60"
                 onKeyDown={(e) => e.key === 'Enter' && setShowLocationInput(false)}
               />
             </div>
           )}
 
           {showFeelingPicker && (
-            <div className="grid grid-cols-4 gap-2 bg-white/5 p-3 rounded-2xl animate-in slide-in-from-bottom-2">
+            <div className="grid grid-cols-4 gap-2 bg-foreground/5 p-3 rounded-2xl animate-in slide-in-from-bottom-2">
               {FEELINGS.map(f => (
                 <button 
                   key={f.label} 
                   onClick={() => { setFeeling(f); setShowFeelingPicker(false); }}
-                  className="flex flex-col items-center space-y-1 p-2 hover:bg-white/10 rounded-xl transition-all"
+                  className="flex flex-col items-center space-y-1 p-2 hover:bg-foreground/10 rounded-xl transition-all"
                 >
                   <span className="text-2xl">{f.emoji}</span>
-                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-tighter">{f.label}</span>
+                  <span className="text-[10px] font-bold text-foreground uppercase tracking-tighter">{f.label}</span>
                 </button>
               ))}
             </div>
@@ -222,8 +218,8 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onPost }) => {
 
           {showTagPicker && (
             <div className="bg-white/5 p-3 rounded-2xl animate-in slide-in-from-bottom-2 space-y-2">
-              <div className="flex items-center space-x-2 bg-black/40 px-3 py-1.5 rounded-full mb-2">
-                <Search className="w-3.5 h-3.5 text-neutral-500" />
+              <div className="flex items-center space-x-2 bg-background/40 px-3 py-1.5 rounded-full mb-2">
+                <Search className="w-3.5 h-3.5 text-foreground/50" />
                 <input placeholder="Search friends..." className="bg-transparent border-none outline-none text-xs flex-1" />
               </div>
               <div className="flex flex-wrap gap-2">
@@ -235,7 +231,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onPost }) => {
                       "flex items-center space-x-2 p-1.5 rounded-full transition-all border",
                       taggedUsers.find(tu => tu.id === u.id) 
                         ? "bg-emerald-500/10 border-emerald-500 text-emerald-500" 
-                        : "bg-black/20 border-white/5 text-neutral-400 hover:border-white/20"
+                        : "bg-foreground/20 border-foreground/5 text-neutral-400 hover:border-border/20"
                     )}
                   >
                     <Avatar className="w-5 h-5"><AvatarImage src={u.avatar} /></Avatar>
@@ -247,7 +243,7 @@ const PostModal: React.FC<PostModalProps> = ({ isOpen, onClose, onPost }) => {
           )}
 
           <Button 
-            className="w-full rounded-xl h-12 font-black text-lg bg-sky-500 hover:bg-sky-400 shadow-xl shadow-sky-500/20 disabled:opacity-50"
+            className="w-full rounded-xl h-12 font-black text-lg shadow-xl shadow-sky-500/20 disabled:opacity-50"
             disabled={!content.trim() && selectedImages.length === 0 && !selectedGif}
             onClick={handleSubmit}
           >
@@ -264,7 +260,7 @@ const ToolIconButton = ({ icon, onClick, active }: any) => (
     onClick={onClick}
     className={cn(
       "p-2.5 rounded-full transition-all",
-      active ? "bg-white/10" : "hover:bg-white/10"
+      active ? "bg-foreground/10" : "hover:bg-foreground/10"
     )}
   >
     {icon}

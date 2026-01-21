@@ -4,6 +4,11 @@ import "../globals.css";
 import { ThemeProvider } from "@/context/theme-provider";
 import LeftSidebar, { MobileNav } from "@/components/layout/left-bar";
 import RightSidebar from "@/components/layout/right-bar";
+import FloatingChatRenderer from "@/components/message/ChatRender";
+
+
+
+
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-geist-sans",
@@ -50,6 +55,8 @@ export default function RootLayout({
             </div>
 
           </div>
+
+         <FloatingChatRenderer />
 
           <MobileNav />
 

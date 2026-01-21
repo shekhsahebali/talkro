@@ -24,14 +24,20 @@ export const NAV_ITEMS = [
 ];
 import { usePathname, useRouter } from "next/navigation";
 import Link from 'next/link';
+import FloatingChat from '../message/FloatingChat';
+import { useState } from 'react';
+import { ChatState } from '@/types/chat';
 
 const LeftSidebar = () => {
+
     const router = useRouter();
     const pathname = usePathname();
 
     const onPageChange = (page: string) => {
         router.push(`${page}`);
     };
+
+
     return (
         <aside className="sticky left-0 top-0 h-screen hidden sm:flex flex-col justify-between py-4 px-2 xl:px-8 w-20 xl:w-[280px] border-r border-border bg-sidebar z-50">
             <div className="flex flex-col items-center xl:items-start">
@@ -84,7 +90,8 @@ const LeftSidebar = () => {
                     ))}
 
                     <div className="pt-6 w-full px-2 xl:px-0">
-                        <Button className="w-12 h-12 xl:w-full xl:h-14 rounded-full shadow-xl shadow-primary/10 cursor-pointer" size="lg">
+                        <Button onClick={() => onPageChange('/post/create')} 
+                        className="w-12 h-12 xl:w-full xl:h-14 rounded-full shadow-xl shadow-primary/10 cursor-pointer" size="lg">
                             <Feather className="xl:hidden w-6 h-6 shrink-0" />
                             <span className="hidden xl:block font-bold">Create Post</span>
                         </Button>
@@ -109,6 +116,7 @@ const LeftSidebar = () => {
                 </div>
                 <MoreHorizontal className="hidden xl:block w-4 h-4 text-foreground/50" />
             </div>
+             
 
         </aside>
     );
