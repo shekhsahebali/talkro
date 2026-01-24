@@ -8,7 +8,7 @@ import {
   Activity, Sparkles, Plus
 } from 'lucide-react';
 import { Button } from './ui/Button';
-import { cn } from '../lib/utils';
+import { cn } from '../../lib/utils';
 import { Avatar, AvatarImage, AvatarFallback } from './ui/Avatar';
 
 interface CommunitySettingsProps {
