@@ -5,9 +5,9 @@ import { Globe, Lock, Users, Share2, MoreHorizontal, MessageSquare, Plus, Check,
 import { Avatar, AvatarImage, AvatarFallback } from './ui/Avatar';
 import { Button } from './ui/Button';
 import Post from './Post';
-import Composer from './Composer';
+import Composer from '../Composer';
 import { INITIAL_POSTS, CURRENT_USER } from '../constants';
-import { cn } from '../lib/utils';
+import { cn } from '../../lib/utils';
 
 interface CommunityProfileProps {
   community: Community;
