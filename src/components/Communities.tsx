@@ -72,8 +72,13 @@ const Communities: React.FC<CommunitiesProps> = ({ onCreate, onSelect }) => {
               {groups.map((group) => (
                 <div 
                   key={group.id} 
+<<<<<<< Updated upstream:src/components/Communities.tsx
                   onClick={() => onSelect && onSelect(group)}
                   className="bg-white/[0.03] border border-white/[0.08] rounded-2xl overflow-hidden flex flex-col group/card hover:border-white/[0.15] transition-all cursor-pointer"
+=======
+                  onClick={() => router.push(`/communities/${group.id}`)}
+                  className="bg-card border border-border rounded-2xl overflow-hidden flex flex-col group/card hover:border-border transition-all cursor-pointer"
+>>>>>>> Stashed changes:src/app/(narrow)/communities/page.tsx
                 >
                   <div className="h-28 w-full bg-neutral-800 relative overflow-hidden">
                     <img src={group.cover} alt="Cover" className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-700 opacity-80" />
