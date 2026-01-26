@@ -10,11 +10,12 @@ import Post from '@/components/post/post-card';
 // import Composer from '../Composer';
 import { INITIAL_POSTS, CURRENT_USER, COMMUNITIES_MOCK } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 
 const CommunityProfile  = () => {
     const {slug} = useParams();
+    const router = useRouter();
     const community = COMMUNITIES_MOCK.find((c) => c.id === slug) || COMMUNITIES_MOCK[0];
   const [isJoined, setIsJoined] = useState(community.isJoined || false);
   const [memberCount, setMemberCount] = useState(community.memberCount);
@@ -56,7 +57,7 @@ const CommunityProfile  = () => {
         </div>
         <div className="flex items-center space-x-2">
            <Button variant="ghost" size="icon" className="rounded-full"><Share2 className="w-5 h-5 text-foreground/50" /></Button>
-           <Button variant="ghost" size="icon" onClick={() => console.log('Settings')} className="rounded-full text-foreground/50 hover:text-foreground">
+           <Button variant="ghost" size="icon" onClick={() => router.push(`/communities/settings`)} className="rounded-full text-foreground/50 hover:text-foreground">
             <Settings className="w-5 h-5" />
           </Button>
         </div>
@@ -217,7 +218,7 @@ const CommunityProfile  = () => {
           </div>
 
           {/* Right Sidebar - Info Cards (Desktop Only) */}
-          <div className="hidden lg:flex flex-col w-[300px] p-4 space-y-6 shrink-0">
+          {/* <div className="hidden lg:flex flex-col w-[300px] p-4 space-y-6 shrink-0">
              <div className="bg-white/[0.03] border border-border rounded-3xl p-5 space-y-4 shadow-xl">
                 <h3 className="font-black text-sm uppercase tracking-widest text-foreground/50">About Community</h3>
                 <p className="text-sm text-foreground/50 leading-relaxed font-medium">
@@ -246,7 +247,7 @@ const CommunityProfile  = () => {
                    View Moderators
                 </Button>
              </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

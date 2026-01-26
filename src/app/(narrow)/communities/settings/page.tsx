@@ -1,23 +1,34 @@
-
+'use client';
 import React, { useState } from 'react';
-import { Community } from '../types';
+import { Community } from '@/types/community';
 import { 
   ChevronLeft, Bell, BellOff, Shield, BookOpen, LogOut, 
   ChevronRight, Info, Check, Globe, Lock, Users, 
   Eye, FileCheck, UserPlus, Settings, Ban, Trash2, 
   Activity, Sparkles, Plus
 } from 'lucide-react';
-import { Button } from './ui/Button';
-import { cn } from '../lib/utils';
-import { Avatar, AvatarImage, AvatarFallback } from './ui/Avatar';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { COMMUNITIES_MOCK } from '@/lib/constants';
 
-interface CommunitySettingsProps {
-  community: Community;
-  onBack: () => void;
-  onLeave: (id: string) => void;
-}
+const Toggle = ({ active, onToggle }: { active: boolean, onToggle: () => void }) => (
+    <div 
+      onClick={onToggle}
+      className={cn(
+        "w-11 h-6 rounded-full relative transition-all cursor-pointer duration-300",
+        active ? "bg-primary shadow-[0_0_10px_rgba(14,165,233,0.3)]" : "bg-background/80"
+      )}
+    >
+      <div className={cn(
+        "absolute top-1 w-4 h-4 bg-foreground rounded-full transition-all duration-300 shadow-md",
+        active ? "left-6" : "left-1"
+      )} />
+    </div>
+  );
 
-const CommunitySettings: React.FC<CommunitySettingsProps> = ({ community, onBack, onLeave }) => {
+const CommunitySettings  = () => {
+  const [community, setCommunity] = useState<Community>(COMMUNITIES_MOCK[0]);
   const [notifications, setNotifications] = useState(true);
   const [requirePostApproval, setRequirePostApproval] = useState(community.requirePostApproval || false);
   const [memberVisibility, setMemberVisibility] = useState(community.memberVisibility ?? true);
@@ -25,31 +36,18 @@ const CommunitySettings: React.FC<CommunitySettingsProps> = ({ community, onBack
   const [privacyType, setPrivacyType] = useState(community.privacyType || 'public');
   const [activeSection, setActiveSection] = useState<'general' | 'moderation' | 'rules'>('general');
 
-  const Toggle = ({ active, onToggle }: { active: boolean, onToggle: () => void }) => (
-    <div 
-      onClick={onToggle}
-      className={cn(
-        "w-11 h-6 rounded-full relative transition-all cursor-pointer duration-300",
-        active ? "bg-sky-500 shadow-[0_0_10px_rgba(14,165,233,0.3)]" : "bg-neutral-800"
-      )}
-    >
-      <div className={cn(
-        "absolute top-1 w-4 h-4 bg-white rounded-full transition-all duration-300 shadow-md",
-        active ? "left-6" : "left-1"
-      )} />
-    </div>
-  );
+  
 
   return (
-    <div className="flex flex-col min-h-screen bg-black animate-in fade-in duration-300">
-      <header className="sticky top-0 z-40 glass-header border-b border-white/[0.08] px-4 py-4 flex items-center justify-between">
+    <div className="flex flex-col min-h-screen bg-card animate-in fade-in duration-300">
+      <header className="sticky top-0 z-40 glass-header border-b border-border px-4 py-4 flex items-center justify-between">
         <div className="flex items-center space-x-6">
-          <Button variant="ghost" size="icon" onClick={onBack} className="rounded-full">
+          <Button variant="ghost" size="icon" onClick={() => window.history.back()} className="rounded-full">
             <ChevronLeft className="w-6 h-6" />
           </Button>
           <h1 className="text-xl font-black tracking-tight">Settings</h1>
         </div>
-        <Button variant="ghost" className="text-sky-500 font-bold hover:bg-sky-500/10 px-4 rounded-xl">Save</Button>
+        <Button variant="ghost" className="text-primary font-bold hover:bg-primary/10 px-4 rounded-xl">Save</Button>
       </header>
 
       <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col md:flex-row">
@@ -65,7 +63,7 @@ const CommunitySettings: React.FC<CommunitySettingsProps> = ({ community, onBack
             <div className="space-y-10 animate-in slide-in-from-right-4 duration-300">
               <section>
                 <h3 className="px-2 mb-6 text-[10px] font-black text-neutral-500 uppercase tracking-[0.2em]">Appearance & Identity</h3>
-                <div className="bg-white/[0.03] border border-white/[0.08] rounded-[32px] p-6 space-y-6">
+                <div className="bg-white/[0.03] border border-border rounded-[32px] p-6 space-y-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                       <Avatar className="w-16 h-16 rounded-2xl border-2 border-white/10 shadow-xl">
@@ -83,7 +81,7 @@ const CommunitySettings: React.FC<CommunitySettingsProps> = ({ community, onBack
                     <label className="text-xs font-black text-neutral-500 uppercase px-1">About</label>
                     <textarea 
                       defaultValue={community.description}
-                      className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-sm font-medium outline-none focus:border-sky-500 transition-all h-24 resize-none"
+                      className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-sm font-medium outline-none focus:border-primary transition-all h-24 resize-none"
                     />
                   </div>
                 </div>
@@ -120,7 +118,7 @@ const CommunitySettings: React.FC<CommunitySettingsProps> = ({ community, onBack
                 <h3 className="px-2 mb-6 text-[10px] font-black text-neutral-500 uppercase tracking-[0.2em]">Preferences</h3>
                 <div className="space-y-4">
                   <SettingRow 
-                    icon={<Bell className="w-5 h-5 text-sky-500" />} 
+                    icon={<Bell className="w-5 h-5 text-primary" />} 
                     title="Notifications" 
                     desc="Enable alerts for new activity." 
                     control={<Toggle active={notifications} onToggle={() => setNotifications(!notifications)} />} 
@@ -145,25 +143,25 @@ const CommunitySettings: React.FC<CommunitySettingsProps> = ({ community, onBack
           {activeSection === 'moderation' && (
             <div className="space-y-10 animate-in slide-in-from-right-4 duration-300">
                <section>
-                 <div className="p-8 bg-gradient-to-tr from-sky-500/10 to-indigo-500/10 rounded-[40px] border border-white/5 mb-8 relative overflow-hidden">
+                 <div className="p-8 bg-gradient-to-tr from-primary/10 to-indigo-500/10 rounded-[40px] border border-white/5 mb-8 relative overflow-hidden">
                     <div className="relative z-10 space-y-4">
-                       <div className="w-12 h-12 bg-sky-500 rounded-2xl flex items-center justify-center shadow-lg"><Activity className="w-6 h-6 text-white" /></div>
+                       <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-lg"><Activity className="w-6 h-6 text-white" /></div>
                        <h2 className="text-2xl font-black tracking-tight">Moderation Hub</h2>
                        <p className="text-neutral-400 text-sm font-medium max-w-sm">Manage post approvals, flags, and restricted members to keep the community safe.</p>
                     </div>
-                    <Sparkles className="absolute -right-10 -bottom-10 w-48 h-48 text-sky-500 opacity-5" />
+                    <Sparkles className="absolute -right-10 -bottom-10 w-48 h-48 text-primary opacity-5" />
                  </div>
 
                  <div className="space-y-4">
                     <SettingRow 
-                      icon={<FileCheck className="w-5 h-5 text-sky-500" />} 
+                      icon={<FileCheck className="w-5 h-5 text-primary" />} 
                       title="Post Approval" 
                       desc="Moderators must approve all new posts." 
                       control={<Toggle active={requirePostApproval} onToggle={() => setRequirePostApproval(!requirePostApproval)} />} 
                     />
-                    <div className="flex items-center justify-between p-5 bg-white/[0.03] border border-white/[0.08] rounded-[28px] hover:bg-white/[0.05] transition-all cursor-pointer group">
+                    <div className="flex items-center justify-between p-5 bg-white/[0.03] border border-border rounded-[28px] hover:bg-white/[0.05] transition-all cursor-pointer group">
                        <div className="flex items-center space-x-4">
-                         <div className="p-2.5 rounded-2xl bg-neutral-800 text-neutral-400 group-hover:bg-sky-500 group-hover:text-white transition-all"><Users className="w-5 h-5" /></div>
+                         <div className="p-2.5 rounded-2xl bg-neutral-800 text-neutral-400 group-hover:bg-primary group-hover:text-white transition-all"><Users className="w-5 h-5" /></div>
                          <div>
                             <p className="font-bold text-[16px]">Member Requests</p>
                             <p className="text-xs text-neutral-500 font-medium">12 pending applications</p>
@@ -171,7 +169,7 @@ const CommunitySettings: React.FC<CommunitySettingsProps> = ({ community, onBack
                        </div>
                        <ChevronRight className="w-5 h-5 text-neutral-700" />
                     </div>
-                    <div className="flex items-center justify-between p-5 bg-white/[0.03] border border-white/[0.08] rounded-[28px] hover:bg-white/[0.05] transition-all cursor-pointer group">
+                    <div className="flex items-center justify-between p-5 bg-white/[0.03] border border-border rounded-[28px] hover:bg-white/[0.05] transition-all cursor-pointer group">
                        <div className="flex items-center space-x-4">
                          <div className="p-2.5 rounded-2xl bg-neutral-800 text-neutral-400 group-hover:bg-rose-500 group-hover:text-white transition-all"><Ban className="w-5 h-5" /></div>
                          <div>
@@ -194,9 +192,9 @@ const CommunitySettings: React.FC<CommunitySettingsProps> = ({ community, onBack
                </div>
                <div className="space-y-4">
                  {[1,2,3].map(i => (
-                   <div key={i} className="p-6 bg-white/[0.03] border border-white/[0.08] rounded-[32px] group relative hover:border-white/20 transition-all">
+                   <div key={i} className="p-6 bg-white/[0.03] border border-border rounded-[32px] group relative hover:border-white/20 transition-all">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-[10px] font-black text-sky-500 uppercase tracking-widest">Rule #{i}</span>
+                        <span className="text-[10px] font-black text-primary uppercase tracking-widest">Rule #{i}</span>
                         <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
                            <Button variant="ghost" size="icon" className="h-8 w-8 text-neutral-500 hover:text-white"><Settings className="w-4 h-4" /></Button>
                            <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-500 hover:bg-rose-500/10"><Trash2 className="w-4 h-4" /></Button>
@@ -215,7 +213,7 @@ const CommunitySettings: React.FC<CommunitySettingsProps> = ({ community, onBack
             <Button 
               variant="outline" 
               className="w-full h-16 rounded-[28px] border-rose-500/20 text-rose-500 hover:bg-rose-500/10 hover:border-rose-500 font-black text-lg transition-all"
-              onClick={() => onLeave(community.id)}
+              onClick={() => {}}
             >
               <LogOut className="w-6 h-6 mr-3" />
               Leave Community
@@ -235,16 +233,16 @@ const NavButton = ({ active, onClick, icon, label }: any) => (
     onClick={onClick}
     className={cn(
       "w-full flex items-center space-x-3 p-3.5 rounded-2xl transition-all font-bold text-sm",
-      active ? "bg-sky-500/10 text-sky-500 shadow-sm" : "text-neutral-500 hover:bg-white/5 hover:text-neutral-200"
+      active ? "bg-primary/10 text-primary shadow-sm" : "text-neutral-500 hover:bg-white/5 hover:text-neutral-200"
     )}
   >
-    <span className={active ? "text-sky-500" : "text-neutral-600"}>{icon}</span>
+    <span className={active ? "text-primary" : "text-neutral-600"}>{icon}</span>
     <span>{label}</span>
   </button>
 );
 
 const SettingRow = ({ icon, title, desc, control }: any) => (
-  <div className="flex items-center justify-between p-5 bg-white/[0.03] border border-white/[0.08] rounded-[28px] hover:bg-white/[0.05] transition-all">
+  <div className="flex items-center justify-between p-5 bg-white/[0.03] border border-border rounded-[28px] hover:bg-white/[0.05] transition-all">
     <div className="flex items-center space-x-4">
       <div className="p-2.5 rounded-2xl bg-neutral-800 shadow-inner">{icon}</div>
       <div>
@@ -261,17 +259,17 @@ const PrivacyCard = ({ selected, onClick, icon, title, desc }: any) => (
     onClick={onClick}
     className={cn(
       "p-5 rounded-[28px] border cursor-pointer transition-all flex flex-col items-center text-center space-y-3",
-      selected ? "border-sky-500 bg-sky-500/5 shadow-[0_0_20px_rgba(14,165,233,0.1)]" : "border-white/[0.08] hover:bg-white/[0.03] hover:border-white/20"
+      selected ? "border-primary bg-primary/5 shadow-[0_0_20px_rgba(14,165,233,0.1)]" : "border-border hover:bg-white/[0.03] hover:border-white/20"
     )}
   >
-    <div className={cn("p-3 rounded-2xl transition-all", selected ? "bg-sky-500 text-white" : "bg-neutral-800 text-neutral-500")}>
+    <div className={cn("p-3 rounded-2xl transition-all", selected ? "bg-primary text-white" : "bg-neutral-800 text-neutral-500")}>
       {icon}
     </div>
     <div>
       <h4 className="font-black text-sm uppercase tracking-widest">{title}</h4>
       <p className="text-[11px] text-neutral-500 font-bold mt-1 leading-tight">{desc}</p>
     </div>
-    {selected && <div className="p-1 bg-sky-500 rounded-full"><Check className="w-3 h-3 text-white" /></div>}
+    {selected && <div className="p-1 bg-primary rounded-full"><Check className="w-3 h-3 text-white" /></div>}
   </div>
 );
 

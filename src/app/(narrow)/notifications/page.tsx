@@ -1,14 +1,16 @@
 
-import React from 'react';
-import { NOTIFICATIONS_MOCK } from '../constants';
-import { Heart, Repeat, UserPlus, AtSign, Settings, CheckCircle2 } from 'lucide-react';
-import { Avatar, AvatarImage, AvatarFallback } from './ui/Avatar';
-import { cn } from '../lib/utils';
 
-const Notifications: React.FC = () => {
+import { NOTIFICATIONS_MOCK } from '@/lib/constants';
+import { Heart, Repeat, UserPlus, AtSign, Settings, CheckCircle2 } from 'lucide-react';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { cn } from '@/lib/utils';
+
+const NotificationsPage  = () => {
+
+
   return (
-    <div className="flex flex-col min-h-screen bg-black">
-      <header className="sticky top-0 z-30 bg-black/70 backdrop-blur-md border-b border-[#2f3336]">
+    <div className="flex flex-col min-h-screen bg-background">
+      <div className="sticky top-0 z-30 bg-black/70 backdrop-blur-md border-b border-[#2f3336]">
         <div className="px-4 py-3 flex justify-between items-center">
           <h1 className="text-xl font-bold">Notifications</h1>
           <Settings className="w-5 h-5 text-[#e7e9ea] cursor-pointer" />
@@ -21,9 +23,9 @@ const Notifications: React.FC = () => {
             </div>
           ))}
         </div>
-      </header>
+      </div>
 
-      <div className="flex flex-col divide-y divide-[#2f3336]">
+      <div className="flex flex-col divide-y divide-border">
         {NOTIFICATIONS_MOCK.map((notif) => (
           <div key={notif.id} className="p-4 hover:bg-[#080808] transition-colors cursor-pointer flex space-x-3">
             <div className="pt-1">
@@ -51,4 +53,4 @@ const Notifications: React.FC = () => {
   );
 };
 
-export default Notifications;
+export default NotificationsPage;

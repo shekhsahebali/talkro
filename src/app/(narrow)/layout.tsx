@@ -45,7 +45,7 @@ export default function RootLayout({
               <LeftSidebar />
             </div>
 
-            <main className="border-white/8 flex flex-col relative max-w-[640px] min-h-screen sm:border-x">
+            <main className="flex flex-col relative max-w-[740px] min-h-screen">
               {children}
               {model}
             </main>

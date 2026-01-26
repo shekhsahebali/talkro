@@ -1,4 +1,4 @@
-
+'use client';
 import React, { useState, useEffect } from 'react';
 import { 
   BarChart3, TrendingUp, DollarSign, Users, Award, 
@@ -8,16 +8,12 @@ import {
   UserCheck, ShieldCheck, CreditCard, ChevronDown,
   Globe, Briefcase, FileText, Ban, Trash2, Smartphone
 } from 'lucide-react';
-import { Avatar, AvatarImage, AvatarFallback } from './ui/Avatar';
-import { Button } from './ui/Button';
-import { cn } from '../lib/utils';
-import { User } from '../types';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { User } from '@/types/user';
+import { MOCK_USERS } from '@/lib/constants';
 
-interface CreatorStudioProps {
-  user: User;
-  onUpgrade: (data?: any) => void;
-  onMonetize: () => void;
-}
 
 const CATEGORIES = ['Technology', 'Gaming', 'Art & Design', 'Education', 'Lifestyle', 'Entertainment', 'Finance'];
 const PAYOUT_METHODS = [
@@ -26,7 +22,8 @@ const PAYOUT_METHODS = [
   { id: 'stripe', icon: <Globe className="w-5 h-5" />, label: 'Stripe Connect', desc: 'Best for professional creators' }
 ];
 
-const CreatorStudio: React.FC<CreatorStudioProps> = ({ user, onUpgrade, onMonetize }) => {
+const CreatorStudio = () => {
+    const user = MOCK_USERS[0];
   const [activeTab, setActiveTab] = useState<'analytics' | 'monetization' | 'payouts' | 'settings'>('analytics');
   const [onboardingStep, setOnboardingStep] = useState(0);
   const [isApplying, setIsApplying] = useState(false);

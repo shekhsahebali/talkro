@@ -12,7 +12,7 @@ export const TRENDING_HASHTAGS = [
 export const CURRENT_USER = {
   id: 'u1',
   name: 'Senior Dev',
-  handle: '@front_end_pro',
+  handle: 'front_end_pro',
   avatar: 'https://picsum.photos/seed/user123/200',
   cover: 'https://picsum.photos/seed/cover123/1200/400',
   bio: 'Building the future of the web, one component at a time. Tech lead, runner, and coffee enthusiast.',
@@ -38,7 +38,7 @@ export const CURRENT_USER = {
 export const MOCK_USERS = Array.from({ length: 15 }).map((_, i) => ({
   id: `u-list-${i}`,
   name: `User ${i + 1}`,
-  handle: `@user_handle_${i + 1}`,
+  handle: `user_handle_${i + 1}`,
   avatar: `https://picsum.photos/seed/listuser${i}/200`,
   bio: `Software Engineer and enthusiast. Building cool things on the web.`,
   verified: i % 3 === 0,

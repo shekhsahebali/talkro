@@ -19,7 +19,7 @@ export const NAV_ITEMS = [
     { icon: <Bell className="w-7 h-7" />, label: 'Notifications', id: '/notifications' },
     { icon: <Mail className="w-7 h-7" />, label: 'Messages', id: '/messages' },
     { icon: <BarChart3 className="w-7 h-7" />, label: 'Creator', id: '/creator-studio' },
-    { icon: <User className="w-7 h-7" />, label: 'Profile', id: '/profile' },
+    { icon: <User className="w-7 h-7" />, label: 'Profile', id: '/u' },
     { icon: <SettingsIcon className="w-7 h-7" />, label: 'Settings', id: '/settings' },
 ];
 import { usePathname, useRouter } from "next/navigation";
@@ -138,7 +138,7 @@ export const MobileNav = () => {
             <Search className={cn("w-6 h-6", pathname === '/explore' ? "text-primary" : "text-foreground/50")} onClick={() => onPageChange('/explore')} />
             <PlaySquare className={cn("w-6 h-6", pathname === '/reels' ? "text-primary" : "text-foreground/50")} onClick={() => onPageChange('/reels')} />
             <Users className={cn("w-6 h-6", pathname === '/communities' ? "text-primary" : "text-foreground/50")} onClick={() => onPageChange('/communities')} />
-            <User className={cn("w-6 h-6", pathname === '/profile' ? "text-primary" : "text-foreground/50")} onClick={() => onPageChange('/profile')} />
+            <User className={cn("w-6 h-6", pathname === '/u' ? "text-primary" : "text-foreground/50")} onClick={() => onPageChange('/profile')} />
         </nav>
     )
 }

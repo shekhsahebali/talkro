@@ -40,7 +40,7 @@ export default function RootLayout({
               <div className="hidden sm:block">
                 <LeftSidebar />
               </div>
-              <main className="flex-1 mx-auto flex flex-col relative min-h-screen max-w-full">
+              <main className="flex-1 mx-auto flex flex-col gap-2 relative min-h-screen max-w-full">
                 {children}
                 {model}
               </main>
