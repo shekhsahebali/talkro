@@ -35,6 +35,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Textarea } from "@/components/ui/textarea"
 import Image from 'next/image';
 import { CommentItem } from './comment';
+import Link from 'next/link';
 interface PostProps {
   post: PostType;
   hideMedia?: boolean;
@@ -195,10 +196,12 @@ const Post: React.FC<PostProps> = ({
       <div className="p-5 flex items-center justify-between">
         <div className="flex items-center space-x-3.5 min-w-0">
           <div className="relative">
+            <Link href={"/u/" + post.author.handle} >
             <Avatar className="w-11 h-11 border border-border/10 ring-2 ring-transparent group-hover/post:ring-primary/10 transition-all cursor-pointer shadow-lg hover:ring-ring">
               <AvatarImage src={post.author.avatar} />
               <AvatarFallback>{post.author.name[0]}</AvatarFallback>
             </Avatar>
+            </Link>
             <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-background rounded-full shadow-lg" />
           </div>
           <div className="flex flex-col min-w-0">

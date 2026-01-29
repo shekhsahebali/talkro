@@ -1,18 +1,19 @@
 
+import { User } from '@/types/user';
 import React from 'react';
 
 export const TRENDING_HASHTAGS = [
   'ReactJS', 'NextJS', 'TailwindCSS', 'WebDev', 'JavaScript', 'TypeScript', 
-  'AI', 'Gemini', 'OpenAI', 'Programming', 'Coding', 'Frontend', 'Design', 
+  'AI', 'Alex', 'OpenAI', 'Programming', 'Coding', 'Frontend', 'Design', 
   'UIUX', 'TechNews', 'SoftwareEngineering', 'NexusHub'
 ];
 
 
 
-export const CURRENT_USER = {
+export const CURRENT_USER: User = {
   id: 'u1',
   name: 'Senior Dev',
-  handle: 'front_end_pro',
+  handle: 'user_handle_1',
   avatar: 'https://picsum.photos/seed/user123/200',
   cover: 'https://picsum.photos/seed/cover123/1200/400',
   bio: 'Building the future of the web, one component at a time. Tech lead, runner, and coffee enthusiast.',
@@ -21,28 +22,56 @@ export const CURRENT_USER = {
   joined: 'Joined March 2012',
   work: 'Senior Engineer at MetaX',
   education: 'Stanford University',
-  verified: true,
   following: 842,
   followers: '12.4K',
+  isOnline: true,
   isCreator: false,
+  creatorStatus: 'applying',
   monetizationEnabled: false,
+  subscriptionPrice: 0,
+  creatorCategory: '',
   creatorStats: {
     totalViews: 4200000,
     engagementRate: 5.8,
     monthlyEarnings: 0,
     totalEarnings: 0,
-    pendingPayout: 0
+    pendingPayout: 0,
+    profileVisits: 0,
+    linkClicks: 0
   }
 };
 
-export const MOCK_USERS = Array.from({ length: 15 }).map((_, i) => ({
+export const MOCK_USERS: User[] = Array.from({ length: 15 }).map((_, i) => ({
   id: `u-list-${i}`,
   name: `User ${i + 1}`,
   handle: `user_handle_${i + 1}`,
   avatar: `https://picsum.photos/seed/listuser${i}/200`,
+  cover: 'https://picsum.photos/seed/cover123/1200/400',
   bio: `Software Engineer and enthusiast. Building cool things on the web.`,
   verified: i % 3 === 0,
   isFollowing: i % 2 === 0,
+  location: 'San Francisco, CA',
+  website: 'frontendpro.dev',
+  joined: 'Joined March 2012',
+  work: 'Senior Engineer at MetaX',
+  education: 'Stanford University',
+  following: 842,
+  followers: '12.4K',
+  isOnline: true,
+  isCreator: false,
+  creatorStatus: 'applying',
+  monetizationEnabled: false,
+  subscriptionPrice: 0,
+  creatorCategory: '',
+  creatorStats: {
+    totalViews: 4200000,
+    engagementRate: 5.8,
+    monthlyEarnings: 0,
+    totalEarnings: 0,
+    pendingPayout: 0,
+    profileVisits: 0,
+    linkClicks: 0
+  }
 }));
 
 export const COMMUNITIES_MOCK = [
@@ -87,26 +116,14 @@ export const EXPLORE_TRENDS_MOCK = [
 export const CONVERSATIONS_MOCK = [
   {
     id: 'c1',
-    participant: {
-      id: 'u2',
-      name: 'Gemini AI',
-      handle: '@GoogleGemini',
-      avatar: 'https://picsum.photos/seed/gemini/200',
-      verified: true,
-    },
+    participant: MOCK_USERS[4],
     lastMessage: 'Did you see the new multimodal updates?',
     timestamp: '2m',
     unread: true,
   },
   {
     id: 'c2',
-    participant: {
-      id: 'u10',
-      name: 'Cinematic AI',
-      handle: '@cine_ai',
-      avatar: 'https://picsum.photos/seed/cine/200',
-      verified: true,
-    },
+    participant: MOCK_USERS[2],
     lastMessage: 'That render was incredible!',
     timestamp: '1h',
   }
@@ -116,14 +133,14 @@ export const NOTIFICATIONS_MOCK = [
   {
     id: 'n1',
     type: 'like',
-    user: { name: 'Alice', handle: '@alice', avatar: 'https://picsum.photos/seed/alice/200' },
+    user: MOCK_USERS[1],
     content: 'liked your post',
     timestamp: '5m',
   },
   {
     id: 'n2',
     type: 'follow',
-    user: { name: 'Bob Smith', handle: '@bob', avatar: 'https://picsum.photos/seed/bob/200', verified: true },
+    user: MOCK_USERS[3],
     content: 'followed you',
     timestamp: '2h',
   }
@@ -132,21 +149,15 @@ export const NOTIFICATIONS_MOCK = [
 
 
 export const STORY_DATA = [
-  { id: 's1', user: { id: 'u1', name: 'Your Story', handle: '@front_end_pro', avatar: 'https://picsum.photos/seed/user123/200' }, hasUnseen: false },
-  { id: 's2', user: { id: 'u2', name: 'Gemini', handle: '@gemini', avatar: 'https://picsum.photos/seed/gemini/200' }, hasUnseen: true },
+  { id: 's1', user: CURRENT_USER, hasUnseen: false },
+  { id: 's2', user: MOCK_USERS[1], hasUnseen: true },
 ];
 
 export const INITIAL_POSTS = [
   {
     id: 'p1',
-    author: {
-      id: 'u2',
-      name: 'Gemini AI',
-      handle: '@GoogleGemini',
-      avatar: 'https://picsum.photos/seed/gemini/200',
-      verified: true,
-    },
-    content: "I'm integrated into this clone! Ask me anything about real-time trends using the Grok panel on the right. 🚀✨ #AI #Gemini #TechNews",
+    author: MOCK_USERS[0],
+    content: "I'm integrated into this clone! Ask me anything about real-time trends using the Grok panel on the right. 🚀✨ #AI #Alex #TechNews",
     timestamp: new Date(),
     likes: 1240,
     retweets: 450,
@@ -156,14 +167,19 @@ export const INITIAL_POSTS = [
   }, 
   {
     id: 'p2',
-    author: {
-      id: 'u2',
-      name: 'Gemini AI 2',
-      handle: '@GoogleGemini',
-      avatar: 'https://picsum.photos/seed/gemini/200',
-      verified: true,
-    },
-    content: "I'm integrated into this clone! Ask me anything about real-time trends using the Grok panel on the right. 🚀✨ #AI #Gemini #TechNews",
+    author: MOCK_USERS[2],
+    content: "I'm integrated into this clone! Ask me anything about real-time trends using the Grok panel on the right. 🚀✨ #AI #Alex #TechNews",
+    timestamp: new Date(),
+    likes: 1240,
+    retweets: 450,
+    replies: 89,
+    views: '124K',
+    image: 'https://picsum.photos/seed/ai-visual/1200/800',
+  },
+  {
+    id: 'p3',
+    author: MOCK_USERS[4],
+    content: "I'm integrated into this clone! Ask me anything about real-time trends using the Grok panel on the right. 🚀✨ #AI #Alex #TechNews",
     timestamp: new Date(),
     likes: 1240,
     retweets: 450,

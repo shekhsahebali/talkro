@@ -32,7 +32,7 @@ const RightSidebar = ({ show = true }) => {
   }));
 
   return (
-    <aside className="sticky right-0 top-0 h-screen hidden lg:flex flex-col w-[340px] xl:w-[380px] space-y-4 px-6 py-4 overflow-y-auto no-scrollbar border-l border-border bg-sidebar z-50 pb-20">
+    <aside className="sticky right-0 top-0 h-screen hidden lg:flex flex-col space-y-4 px-6 py-4 overflow-y-auto no-scrollbar border-l border-border bg-sidebar z-50 pb-20">
       {/* Search Bar */}
       <div className="sticky top-0 pt-1 pb-3 z-10">
         <div className="relative group">

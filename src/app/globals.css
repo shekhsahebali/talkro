@@ -174,7 +174,7 @@ html {
     }
     .animate-modal { animation: modalIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
 
-.card-glass {
-  @apply bg-gray-900/50 border-gray-800 hover:border-purple-500/50;
+.main {
+  @apply bg-background/150 border-border shadow;
 } 
 

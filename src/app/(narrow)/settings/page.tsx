@@ -11,15 +11,17 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { CURRENT_USER } from '@/lib/constants';
 import { cn } from '@/lib/utils';
+import { useTheme } from "next-themes"
 
 
 const SettingsPage  = () => {
+  const { setTheme, theme } = useTheme();
   const [activeTab, setActiveTab] = useState<'General' | 'Account' | 'Privacy' | 'Security' | 'Notifications'>('General');
   const [twoFactor, setTwoFactor] = useState(false);
   const [dataSaver, setDataSaver] = useState(false);
   const [isPrivate, setIsPrivate] = useState(false);
   const [showDeactivateConfirm, setShowDeactivateConfirm] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  
   const [fontSize, setFontSize] = useState<'small' | 'medium' | 'large'>('medium');
   const [sensitiveContent, setSensitiveContent] = useState(false);
   
@@ -109,7 +111,7 @@ const SettingsPage  = () => {
   );
 
   return (
-    <div className="flex flex-col min-h-screen bg-background animate-in fade-in duration-300">
+    <div className="flex flex-col min-h-screen main animate-in fade-in duration-300">
       <header className="sticky top-0 z-40 glass-header border-b border-white/[0.08] px-6 py-6 flex items-center justify-between">
         <h1 className="text-2xl font-black tracking-tighter">Settings</h1>
         <Button variant="ghost" size="icon" className="rounded-full"><Search className="w-5 h-5 text-neutral-400" /></Button>
@@ -161,10 +163,10 @@ const SettingsPage  = () => {
                       <p className="text-xs text-neutral-500 font-medium">Automatic system switching available</p>
                     </div>
                     <div className="flex bg-neutral-900 rounded-2xl p-1 border border-white/5">
-                      <button onClick={() => { setTheme('light'); showToast('Switched to Light Mode'); }} className={cn("flex items-center px-6 py-2.5 rounded-xl text-xs font-black transition-all", theme === 'light' ? "bg-white text-black shadow-2xl" : "text-neutral-500 hover:text-neutral-300")}>
+                      <button onClick={() => { setTheme('light'); showToast('Switched to Light Mode'); }} className={cn("flex items-center px-6 py-2.5 rounded-xl text-xs font-black transition-all", theme == 'light' ? "bg-white text-black shadow-2xl" : "text-neutral-500 hover:text-neutral-300")}>
                         <Sun className="w-4 h-4 mr-2" /> Light
                       </button>
-                      <button onClick={() => { setTheme('dark'); showToast('Switched to Dark Mode'); }} className={cn("flex items-center px-6 py-2.5 rounded-xl text-xs font-black transition-all", theme === 'dark' ? "bg-sky-500 text-white shadow-2xl" : "text-neutral-500 hover:text-neutral-300")}>
+                      <button onClick={() => { setTheme('dark'); showToast('Switched to Dark Mode'); }} className={cn("flex items-center px-6 py-2.5 rounded-xl text-xs font-black transition-all", theme == 'dark' ? "bg-sky-500 text-white shadow-2xl" : "text-neutral-500 hover:text-neutral-300")}>
                         <Moon className="w-4 h-4 mr-2" /> Dark
                       </button>
                     </div>

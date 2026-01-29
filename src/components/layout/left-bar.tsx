@@ -10,6 +10,8 @@ import {
 import { Button } from '../ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 import { cn } from '@/lib/utils';
+import { usePathname, useRouter } from "next/navigation";
+import Link from 'next/link';
 
 export const NAV_ITEMS = [
     { icon: <Home className="w-7 h-7" />, label: 'Home', id: '/' },
@@ -19,14 +21,10 @@ export const NAV_ITEMS = [
     { icon: <Bell className="w-7 h-7" />, label: 'Notifications', id: '/notifications' },
     { icon: <Mail className="w-7 h-7" />, label: 'Messages', id: '/messages' },
     { icon: <BarChart3 className="w-7 h-7" />, label: 'Creator', id: '/creator-studio' },
-    { icon: <User className="w-7 h-7" />, label: 'Profile', id: '/u' },
+    // { icon: <User className="w-7 h-7" />, label: 'Profile', id: '/u/' },
     { icon: <SettingsIcon className="w-7 h-7" />, label: 'Settings', id: '/settings' },
 ];
-import { usePathname, useRouter } from "next/navigation";
-import Link from 'next/link';
-import FloatingChat from '../message/FloatingChat';
-import { useState } from 'react';
-import { ChatState } from '@/types/chat';
+
 
 const LeftSidebar = () => {
 
@@ -44,7 +42,7 @@ const LeftSidebar = () => {
                 {/* Logo */}
                 <div
                     onClick={() => onPageChange('/')}
-                    className="p-3 mb-6 w-fit hover:bg-foreground/[0.08] rounded-2xl transition-all cursor-pointer group"
+                    className="p-3 mb-6 w-fit hover:bg-foreground/8 rounded-2xl transition-all cursor-pointer group"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="w-8 h-8 group-hover:scale-110 transition-transform"
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" >
@@ -69,22 +67,17 @@ const LeftSidebar = () => {
                             )}>
                                 <span className={cn(
                                     "shrink-0 transition-transform group-hover:scale-110",
-                                    pathname === item.id ? "text-background" : "",
-                                    item.id === 'creator-studio' && "text-purple-500"
+                                    pathname === item.id ? "text-white" : "",
+                                    item.id === '/creator-studio' && "animate-pulse"
                                 )}>
                                     {item.icon}
                                 </span>
                                 <span className={cn(
                                     "hidden xl:block ml-4 text-[17px] font-bold tracking-tight",
-                                    pathname === item.id ? "text-foreground" : ""
+                                    pathname === item.id ? "text-white" : ""
                                 )}>
                                     {item.label}
                                 </span>
-                                {item.id === 'creator-studio' && (
-                                    <div className="absolute top-2 right-4 hidden xl:block">
-                                        <Sparkles className="w-3 h-3 text-purple-500 animate-pulse" />
-                                    </div>
-                                )}
                             </div>
                         </div>
                     ))}
@@ -101,7 +94,7 @@ const LeftSidebar = () => {
 
             {/* User Profile Footer */}
             <div
-                onClick={() => onPageChange('profile')}
+                onClick={() => onPageChange('/u/'+ CURRENT_USER.handle)}
                 className="flex items-center p-3 hover:bg-foreground/8 rounded-2xl transition-all cursor-pointer justify-between mb-4 group border border-transparent hover:border-border mx-1"
             >
                 <div className="flex items-center min-w-0">
@@ -138,7 +131,7 @@ export const MobileNav = () => {
             <Search className={cn("w-6 h-6", pathname === '/explore' ? "text-primary" : "text-foreground/50")} onClick={() => onPageChange('/explore')} />
             <PlaySquare className={cn("w-6 h-6", pathname === '/reels' ? "text-primary" : "text-foreground/50")} onClick={() => onPageChange('/reels')} />
             <Users className={cn("w-6 h-6", pathname === '/communities' ? "text-primary" : "text-foreground/50")} onClick={() => onPageChange('/communities')} />
-            <User className={cn("w-6 h-6", pathname === '/u' ? "text-primary" : "text-foreground/50")} onClick={() => onPageChange('/profile')} />
+            <User className={cn("w-6 h-6", pathname === '/u' ? "text-primary" : "text-foreground/50")} onClick={() => onPageChange('/u')} />
         </nav>
     )
 }

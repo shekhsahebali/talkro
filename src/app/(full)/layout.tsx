@@ -35,7 +35,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen bg-background text-foreground selection:bg-sky-500/30 overflow-x-hidden">
+          <div className="min-h-screen overflow-x-hidden">
             <div className="flex w-full mx-auto relative">
               <div className="hidden sm:block">
                 <LeftSidebar />

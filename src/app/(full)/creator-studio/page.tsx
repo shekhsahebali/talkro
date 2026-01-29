@@ -58,11 +58,11 @@ const CreatorStudio = () => {
 
   if (!user.isCreator && onboardingStep === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[80vh] p-8 text-center space-y-12 animate-in fade-in duration-700">
+      <div className="flex flex-col items-center justify-center p-8 min-h-screen text-center space-y-12 animate-in fade-in duration-700">
         <div className="relative">
           <div className="absolute inset-0 bg-purple-500/20 blur-[100px] rounded-full" />
-          <div className="w-40 h-40 bg-gradient-to-br from-purple-600 via-indigo-600 to-sky-500 rounded-[48px] flex items-center justify-center mx-auto shadow-[0_20px_60px_-15px_rgba(168,85,247,0.5)] relative z-10 border border-white/20">
-            <Award className="w-20 h-20 text-white" />
+          <div className="w-20 h-20 bg-gradient-to-br from-purple-600 via-indigo-600 to-sky-500 rounded-[48px] flex items-center justify-center mx-auto shadow-[0_20px_60px_-15px_rgba(168,85,247,0.5)] relative z-10 border border-white/20">
+            <Award className="w-10 h-10 text-white" />
           </div>
         </div>
         
@@ -85,7 +85,7 @@ const CreatorStudio = () => {
         <div className="flex flex-col items-center space-y-6 pt-4">
           <Button 
             onClick={handleStartOnboarding} 
-            className="h-16 rounded-[28px] px-16 bg-white text-black hover:bg-neutral-200 font-black text-2xl shadow-2xl shadow-purple-500/30 active:scale-95 transition-all"
+            className="h-16 text-2xl shadow-2xl shadow-purple-500/30 active:scale-95 transition-all"
           >
             Start Application
           </Button>
@@ -98,7 +98,7 @@ const CreatorStudio = () => {
   // ONBOARDING WIZARD
   if (onboardingStep > 0) {
     return (
-      <div className="flex flex-col min-h-screen bg-black animate-in slide-in-from-bottom-6 duration-500">
+      <div className="flex flex-col min-h-screen bg-background animate-in slide-in-from-bottom-6 duration-500">
         <header className="p-6 border-b border-white/10 flex items-center justify-between sticky top-0 bg-black/80 backdrop-blur-md z-20">
           <Button variant="ghost" size="icon" onClick={handlePrevStep} className="rounded-full"><ArrowLeft className="w-6 h-6" /></Button>
           <div className="flex items-center space-x-2">

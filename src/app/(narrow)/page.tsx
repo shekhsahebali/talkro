@@ -19,7 +19,7 @@ const HomePage = () => {
   }
 
   return (
-    <div className="flex flex-col animate-in fade-in duration-500">
+    <div className="flex flex-col main animate-in fade-in duration-500">
       <header className="top-0 m-0 z-30 bg-background border-b border-border/8 px-4 py-4 flex justify-between items-center">
         <div className="flex items-center space-x-6">
           <nav className="flex space-x-4">

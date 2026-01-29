@@ -39,13 +39,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="max-w-full mx-auto flex justify-between grid-cols-[1fr_minmax(0,640px)_1fr] gap-6 min-h-screen">
+          <div className="max-w-full mx-auto flex justify-between grid-cols-[1fr_minmax(0,740px)_1fr] gap-6 min-h-screen">
 
             <div className="hidden sm:block">
               <LeftSidebar />
             </div>
 
-            <main className="flex flex-col relative max-w-[740px] min-h-screen">
+            <main className="flex flex-col relative max-w-full min-w-full sm:max-w-[740px] lg:min-w-[740px]  md:min-w-[640px] min-h-screen">
               {children}
               {model}
             </main>
